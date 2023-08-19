@@ -109,77 +109,49 @@ window.updrec=async()=>{
     }
 
     window.updpass=()=>{
-let old=document.getElementById("oldpass").value;
-let newpass=document.getElementById("newpass").value;
-let reppass=document.getElementById("reppass").value;
-onAuthStateChanged(auth,(user)=>{
-    if (user) {
-        const q = query(collection(db, "users"), where("uid", "==", user.uid));
-const unsubscribe = onSnapshot(q, (querySnapshot) => {
-  const cities = [];
-  querySnapshot.forEach((doc) => {
-      cities.push(doc.data());
-  });
+            const user = auth.currentUser;
+            const newPassword = document.getElementById("newpass").value;
+            const password = document.getElementById("reppass").value;
+            if (password == newPassword) {
+                updatePassword(user, newPassword).then(() => {
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+                    
+                    Toast.fire({
+                        icon: 'success',
+                        title: "Password updated Successfully"
+                    })  
 
-console.log();
-if (cities[0].password==old) {
 
-    if (reppass==newpass) {
 
-        const user1 =user.uid;
-        const newPassword = newpass;
-        updatePassword(user1, newPassword).then(async() => {
-            const washingtonRef = doc(db, "users", userId);
-            await updateDoc(washingtonRef, {
-                password:newpass
+                }).catch((error) => {
+                    console.log(error);
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+                    
+                    Toast.fire({
+                        icon: 'error',
+                        title: error
+                    })  
                 });
-
-
-            const Toast = Swal.mixin({
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                    toast.addEventListener('mouseenter', Swal.stopTimer)
-                    toast.addEventListener('mouseleave', Swal.resumeTimer)
-                }
-            })
-            
-            Toast.fire({
-                icon: 'success',
-                title: "Password updated Successfully"
-            })  
-
-
-
-        }).catch((error) => {
-            const Toast = Swal.mixin({
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                    toast.addEventListener('mouseenter', Swal.stopTimer)
-                    toast.addEventListener('mouseleave', Swal.resumeTimer)
-                }
-            })
-            
-            Toast.fire({
-                icon: 'error',
-                title:error
-            })  
-        });
-
-    }
-
-
-
-}
-
-});
-    }
-})
+            }
+    
     }

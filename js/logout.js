@@ -29,19 +29,21 @@ show()
 
 document.getElementById("logout").addEventListener("click",()=>{
     signOut(auth).then(() => {
-let div=document.getElementById("greet");
+let div=document.getElementById("greet1");
         var d = new Date();
         var time = d.getHours();
-        
         if (time < 12) {
-          document.write("<b>Good morning!</b>");
+           div.innerHTML="Good morning!"
+      
         }
         if (time > 12) {
-          document.write("<b>Good afternoon!</b>");
+            div.innerHTML="<b>Good afternoon!</b>"
+     
         }
         if (time == 12) {
-          document.write("<b>Go eat lunch!</b>");
+            div.innerHTML="<b>Good Night!</b>"
         }
+
 
         document.getElementById("uname").style.display="none";
         document.getElementById("login").style.display="show";
